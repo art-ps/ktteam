@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+    ktteam-app:
+        image: rtfm288/ktteam-app:latest
+        depends_on:
+            - mysql
+            - mysql-test
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./:/application:cached
+
+    mysql:
+        image: mysql:5.7
+        ports:
+            - "33308:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=secret
+            - MYSQL_DATABASE=ktteam
+        volumes:
+            - db-data:/var/lib/mysql:cached
+
+    mysql-test:
+        image: mysql:5.7
+        ports:
+            - "3307:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=secret
+            - MYSQL_DATABASE=testing
+
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "8000:8000"
+        depends_on:
+            - ktteam-app
+        volumes:
+            - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:cached
+            - ./:/application:cached
+
+volumes:
+    db-data:
