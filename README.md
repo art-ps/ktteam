@@ -21,7 +21,7 @@ $ cd ktteam
 3. Скопировать файл с настройками
 
 ```
-$ cp .env.example .env
+$ cp .env.docker .env
 ```
 
 4. Установить зависимости:
@@ -51,6 +51,7 @@ $ docker-compose run --rm --no-deps ktteam-app php console.php seed
 8. Для запуска тестов выполнить:
 
 ```
+$ cp .env.testing.docker .env.testing
 $ docker-compose run --rm ktteam-app ./vendor/bin/phpunit -c ./tests/config.xml --order-by=defects --stop-on-defect
 ```
 
@@ -71,10 +72,10 @@ $ cd ktteam
 3. Скопировать файл с настройками
 
 ```
-$ cp .env.example .env
+$ cp .env.local .env
 ```
 
-4. В файле .env и .env.testing изменить настройки подключения к БД
+4. В файле .env изменить настройки подключения к БД
 
 5. Создать две базы данных:
 
@@ -109,7 +110,13 @@ php -S 0.0.0.0:8000 -t web/
 
 10. Приложение доступно на http://localhost:8000
 
-11. Для запуска тестов в папке приложения выполнить:
+11. Для запуска тестов сначала скопировать файл с настройками подключения:
+
+```
+$ cp .env.testing.local .env.testing
+```
+
+При необходимости изменить настройки подключения к БД в файле , затем запустить тесты:
 
 ```
 $ ./vendor/bin/phpunit -c ./tests/config.xml --order-by=defects --stop-on-defect
